@@ -23,7 +23,7 @@ function getComponent(title: string, value: string | string[], config: any, setC
     } else if (isBoolean(value)) {
         return <Checkbox defaultChecked={value == 'true'} onChange={(value, checked) => change(title, checked.toString().toLowerCase(), config, setConfig)} value={config[title].value}/>
     } else {
-        return <Input id={title} as="textarea" rows={value.length/20} defaultValue={value} onChange={(value) => change(title, value, config, setConfig)} value={config[title].value}/>
+        return <Input id={title} as="textarea" rows={value ? value.length/20 : 2} defaultValue={value} onChange={(value) => change(title, value, config, setConfig)} value={config[title].value}/>
     }
 }
 

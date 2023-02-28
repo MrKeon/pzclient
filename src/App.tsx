@@ -11,22 +11,37 @@ export async function fetchConfig() {
     });
 }
 
+export async function fetchPostPZConfig(body: BodyInit) {
+  console.log(body);
+  return fetch('http://localhost:3001/pzconfig', {
+    method: 'POST', body: body, headers: {
+      "Content-type": "application/json; charset=UTF-8"
+    }
+  })
+    .then((response) => {
+      return response.status;
+    });
+}
+
 function App() {
-  const [config, setConfig] = useState<{[key:string]: any}>([]);
+  const [config, setConfig] = useState<{ [key: string]: any }>([]);
   let list: any[] = [];
   let index = 0;
   function downloadConfig() {
     fetchConfig().then((c) => {
-        setConfig(c);
-        Object.keys(config).forEach((title) => {
-          const obj = config[title];
-          list.push(Item(title, obj.value, index++, config, setConfig, obj.description))
-        });        
+      setConfig(c);
+      Object.keys(config).forEach((title) => {
+        const obj = config[title];
+        list.push(Item(title, obj.value, index++, config, setConfig, obj.description))
+      });
     });
   }
 
-  function uploadConfig() {
-
+  async function uploadConfig() {
+    //console.log(JSON.stringify(config));
+    fetchPostPZConfig(await JSON.stringify(config)).then((status) => {
+      console.log(`servertest.ini update sent. Status: ${status}`);
+    });
   }
 
   // useEffect(() => {
